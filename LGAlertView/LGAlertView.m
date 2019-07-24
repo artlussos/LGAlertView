@@ -1118,15 +1118,23 @@ LGAlertViewType;
     return [self sharedAlertViewForAppearance];
 }
 
-+ (instancetype)appearanceWhenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
-    return [self sharedAlertViewForAppearance];
-}
+//+ (instancetype)appearanceWhenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
+//    return [self sharedAlertViewForAppearance];
+//}
 
 + (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait {
     return [self sharedAlertViewForAppearance];
 }
 
-+ (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait whenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
+//+ (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait whenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
+//    return [self sharedAlertViewForAppearance];
+//}
+
++ (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait whenContainedInInstancesOfClasses:(nonnull NSArray<Class<UIAppearanceContainer>> *)containerTypes {
+    return [self sharedAlertViewForAppearance];
+}
+
++ (instancetype)appearanceWhenContainedInInstancesOfClasses:(NSArray<Class<UIAppearanceContainer>> *)containerTypes {
     return [self sharedAlertViewForAppearance];
 }
 
