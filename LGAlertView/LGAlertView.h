@@ -170,7 +170,7 @@ typedef NS_ENUM(NSUInteger, LGAlertViewWindowLevel) {
 /** Default is YES */
 @property (assign, nonatomic) BOOL shouldDismissAnimated UI_APPEARANCE_SELECTOR;
 
-#pragma marl - Layer properties
+#pragma mark - Layer properties
 
 /**
  Default:
