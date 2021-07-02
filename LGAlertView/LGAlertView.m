@@ -2045,10 +2045,10 @@ LGAlertViewType;
 
 #pragma mark -
 
-- (void)subviewsValidateWithSize:(CGSize)size {
-    if (CGSizeEqualToSize(size, CGSizeZero)) {
-        size = self.viewController.view.bounds.size;
-    }
+- (void)subviewsValidateWithSize:(CGSize __unused )size {
+    // if (CGSizeEqualToSize(size, CGSizeZero)) {
+    //    size = self.viewController.view.bounds.size;
+    // }
 
     // -----
 
