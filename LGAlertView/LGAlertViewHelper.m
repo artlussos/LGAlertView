@@ -61,6 +61,8 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
     NSTimeInterval animationDuration = [notificationUserInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     int animationCurve = [notificationUserInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:animationDuration];
     [UIView setAnimationCurve:animationCurve];
@@ -70,6 +72,7 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
     }
 
     [UIView commitAnimations];
+#pragma GCC diagnostic pop
 }
 
 + (UIImage *)image1x1WithColor:(UIColor *)color {
@@ -102,15 +105,21 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 }
 
 + (BOOL)isPad {
-    return UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad;
+    return [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
 }
 
 + (CGFloat)statusBarHeight {
 #if TARGET_OS_IOS
-    UIApplication *sharedApplication = [UIApplication sharedApplication];
-    return sharedApplication.isStatusBarHidden ? 0.0 : CGRectGetHeight(sharedApplication.statusBarFrame);
+    UIWindow *keyWindow = [LGAlertViewHelper keyWindow];
+    if (keyWindow != NULL) {
+        UIWindowScene *windowScene =  [keyWindow windowScene];
+        if (windowScene != NULL && windowScene.statusBarManager != NULL) {
+            return windowScene.statusBarManager.isStatusBarHidden ? 0.0 : CGRectGetHeight(windowScene.statusBarManager.statusBarFrame);
+        }
+    };
+    return 0.0;
 #else
-    return 0;
+    return 0.0;
 #endif
 }
 
@@ -136,7 +145,20 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 }
 
 + (UIWindow *)keyWindow {
-    return [UIApplication sharedApplication].keyWindow;
+    NSSet<UIScene *>* scenes = [[UIApplication sharedApplication] connectedScenes];
+    if (scenes != NULL) {
+        NSArray *myArray = [scenes allObjects];
+        UIWindowScene *windowScene =  [myArray objectAtIndex:0];
+        if (windowScene != NULL) {
+            for (UIWindow* window in [windowScene windows]) {
+                if (window.isKeyWindow == TRUE) {
+                    return window;
+                }
+            }
+        }
+    }
+
+    return NULL;
 }
 #endif
 

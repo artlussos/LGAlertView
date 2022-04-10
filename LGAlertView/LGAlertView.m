@@ -880,7 +880,7 @@ LGAlertViewType;
         _destructiveButtonEnabled = YES;
         _destructiveButtonIconPosition = LGAlertViewButtonIconPositionLeft;
 
-        _activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
+        _activityIndicatorViewStyle = UIActivityIndicatorViewStyleLarge;
         _activityIndicatorViewColor = self.tintColor;
 
         _progressViewProgressTintColor = self.tintColor;
@@ -1118,17 +1118,9 @@ LGAlertViewType;
     return [self sharedAlertViewForAppearance];
 }
 
-//+ (instancetype)appearanceWhenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
-//    return [self sharedAlertViewForAppearance];
-//}
-
 + (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait {
     return [self sharedAlertViewForAppearance];
 }
-
-//+ (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait whenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ... {
-//    return [self sharedAlertViewForAppearance];
-//}
 
 + (instancetype)appearanceForTraitCollection:(UITraitCollection *)trait whenContainedInInstancesOfClasses:(nonnull NSArray<Class<UIAppearanceContainer>> *)containerTypes {
     return [self sharedAlertViewForAppearance];
@@ -1137,6 +1129,18 @@ LGAlertViewType;
 + (instancetype)appearanceWhenContainedInInstancesOfClasses:(NSArray<Class<UIAppearanceContainer>> *)containerTypes {
     return [self sharedAlertViewForAppearance];
 }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-implementations"
++ (nonnull instancetype)appearanceForTraitCollection:(nonnull UITraitCollection *)trait whenContainedIn:(nullable Class<UIAppearanceContainer>)ContainerClass, ... {
+    return [self sharedAlertViewForAppearance];
+}
+
+
++ (nonnull instancetype)appearanceWhenContainedIn:(nullable Class<UIAppearanceContainer>)ContainerClass, ... {
+    return [self sharedAlertViewForAppearance];
+}
+#pragma GCC diagnostic pop
 
 + (instancetype)sharedAlertViewForAppearance {
     static LGAlertView *alertView;
