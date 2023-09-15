@@ -146,11 +146,15 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
         if (windowScene && [windowScene isKindOfClass:[UIWindowScene class]]) {
             return windowScene.windows.firstObject;
         }
-    } else {
-        return [UIApplication sharedApplication].windows.firstObject;
     }
-    return nil;
+
+    // Suppressing the deprecation warning
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    return [UIApplication sharedApplication].windows.firstObject;
+    #pragma clang diagnostic pop
 }
+
 
 + (UIWindow *)keyWindow {
     NSSet<UIScene *>* scenes = [[UIApplication sharedApplication] connectedScenes];
