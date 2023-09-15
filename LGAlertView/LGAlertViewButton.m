@@ -39,16 +39,45 @@
         self.titleLabel.backgroundColor = UIColor.clearColor;
         self.imageView.backgroundColor = UIColor.clearColor;
 
-        self.contentEdgeInsets = UIEdgeInsetsMake(LGAlertViewPaddingHeight,
-                                                  LGAlertViewPaddingWidth,
-                                                  LGAlertViewPaddingHeight,
-                                                  LGAlertViewPaddingWidth);
+        if (@available(iOS 15.0, *)) {
+            UIButtonConfiguration *config = self.configuration;
+            config.contentInsets = NSDirectionalEdgeInsetsMake(LGAlertViewPaddingHeight,
+                                                           LGAlertViewPaddingWidth,
+                                                           LGAlertViewPaddingHeight,
+                                                           LGAlertViewPaddingWidth);
+            self.configuration = config;
+            /* Not sure why but this was not working. It was making the title
+            disappear. Okay with the default appearance changes in iOS 15 and newer.
+            self.configurationUpdateHandler = ^(__kindof UIButton *button) {
+                if (button.state & UIControlStateHighlighted) {
+                    // Prevent default dimming effect when button is highlighted
+                    // button.imageView.alpha = 1.0;
+                } else if (button.state & UIControlStateDisabled) {
+                    // Prevent the button from graying out its image when disabled
+                    // button.imageView.alpha = 1.0;
+                } else {
+                    // Reset to default appearance for other states
+                    // button.imageView.alpha = 1.0;
+                }
+            }; */
 
-        self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+            self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+            self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        } else {
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            self.contentEdgeInsets = UIEdgeInsetsMake(LGAlertViewPaddingHeight,
+                                                              LGAlertViewPaddingWidth,
+                                                              LGAlertViewPaddingHeight,
+                                                              LGAlertViewPaddingWidth);
 
-        self.adjustsImageWhenHighlighted = NO;
-        self.adjustsImageWhenDisabled = NO;
+            self.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+            self.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+
+            self.adjustsImageWhenHighlighted = NO;
+            self.adjustsImageWhenDisabled = NO;
+            #pragma clang diagnostic pop
+        }
     }
     return self;
 }
@@ -63,33 +92,69 @@
     CGRect imageViewFrame = self.imageView.frame;
     CGRect titleLabelFrame = self.titleLabel.frame;
 
-    if (self.iconPosition == LGAlertViewButtonIconPositionLeft) {
-        if (self.titleLabel.textAlignment == NSTextAlignmentLeft) {
-            imageViewFrame.origin.x = self.contentEdgeInsets.left;
-            titleLabelFrame.origin.x = CGRectGetMaxX(imageViewFrame) + LGAlertViewButtonImageOffsetFromTitle;
-        }
-        else if (self.titleLabel.textAlignment == NSTextAlignmentRight) {
-            imageViewFrame.origin.x = self.contentEdgeInsets.left;
-            titleLabelFrame.origin.x = CGRectGetWidth(self.bounds) - self.contentEdgeInsets.right;
-        }
-        else {
-            imageViewFrame.origin.x -= LGAlertViewButtonImageOffsetFromTitle / 2.0;
-            titleLabelFrame.origin.x += LGAlertViewButtonImageOffsetFromTitle / 2.0;
-        }
-    }
-    else {
-        if (self.titleLabel.textAlignment == NSTextAlignmentLeft) {
-            titleLabelFrame.origin.x = self.contentEdgeInsets.left;
-            imageViewFrame.origin.x = CGRectGetWidth(self.bounds) - self.contentEdgeInsets.right - CGRectGetWidth(imageViewFrame);
-        }
-        else if (self.titleLabel.textAlignment == NSTextAlignmentRight) {
-            imageViewFrame.origin.x = CGRectGetWidth(self.bounds) - self.contentEdgeInsets.right - CGRectGetWidth(imageViewFrame);
-            titleLabelFrame.origin.x = CGRectGetMinX(imageViewFrame) - LGAlertViewButtonImageOffsetFromTitle - CGRectGetWidth(titleLabelFrame);
+    if (@available(iOS 15.0, *)) {
+        NSDirectionalEdgeInsets insets = self.configuration.contentInsets;
+
+        if (self.iconPosition == LGAlertViewButtonIconPositionLeft) {
+            if (self.titleLabel.textAlignment == NSTextAlignmentLeft) {
+                imageViewFrame.origin.x = insets.leading;
+                titleLabelFrame.origin.x = CGRectGetMaxX(imageViewFrame) + LGAlertViewButtonImageOffsetFromTitle;
+            }
+            else if (self.titleLabel.textAlignment == NSTextAlignmentRight) {
+                imageViewFrame.origin.x = insets.leading;
+                titleLabelFrame.origin.x = CGRectGetWidth(self.bounds) - insets.trailing;
+            }
+            else {
+                imageViewFrame.origin.x -= LGAlertViewButtonImageOffsetFromTitle / 2.0;
+                titleLabelFrame.origin.x += LGAlertViewButtonImageOffsetFromTitle / 2.0;
+            }
         }
         else {
-            imageViewFrame.origin.x += CGRectGetWidth(titleLabelFrame) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
-            titleLabelFrame.origin.x -= CGRectGetWidth(imageViewFrame) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
+            if (self.titleLabel.textAlignment == NSTextAlignmentLeft) {
+                titleLabelFrame.origin.x = insets.leading;
+                imageViewFrame.origin.x = CGRectGetWidth(self.bounds) - insets.trailing - CGRectGetWidth(imageViewFrame);
+            }
+            else if (self.titleLabel.textAlignment == NSTextAlignmentRight) {
+                imageViewFrame.origin.x = CGRectGetWidth(self.bounds) - insets.trailing - CGRectGetWidth(imageViewFrame);
+                titleLabelFrame.origin.x = CGRectGetMinX(imageViewFrame) - LGAlertViewButtonImageOffsetFromTitle - CGRectGetWidth(titleLabelFrame);
+            }
+            else {
+                imageViewFrame.origin.x += CGRectGetWidth(titleLabelFrame) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
+                titleLabelFrame.origin.x -= CGRectGetWidth(imageViewFrame) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
+            }
         }
+    } else {
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if (self.iconPosition == LGAlertViewButtonIconPositionLeft) {
+            if (self.titleLabel.textAlignment == NSTextAlignmentLeft) {
+                imageViewFrame.origin.x = self.contentEdgeInsets.left;
+                titleLabelFrame.origin.x = CGRectGetMaxX(imageViewFrame) + LGAlertViewButtonImageOffsetFromTitle;
+            }
+            else if (self.titleLabel.textAlignment == NSTextAlignmentRight) {
+                imageViewFrame.origin.x = self.contentEdgeInsets.left;
+                titleLabelFrame.origin.x = CGRectGetWidth(self.bounds) - self.contentEdgeInsets.right;
+            }
+            else {
+                imageViewFrame.origin.x -= LGAlertViewButtonImageOffsetFromTitle / 2.0;
+                titleLabelFrame.origin.x += LGAlertViewButtonImageOffsetFromTitle / 2.0;
+            }
+        }
+        else {
+            if (self.titleLabel.textAlignment == NSTextAlignmentLeft) {
+                titleLabelFrame.origin.x = self.contentEdgeInsets.left;
+                imageViewFrame.origin.x = CGRectGetWidth(self.bounds) - self.contentEdgeInsets.right - CGRectGetWidth(imageViewFrame);
+            }
+            else if (self.titleLabel.textAlignment == NSTextAlignmentRight) {
+                imageViewFrame.origin.x = CGRectGetWidth(self.bounds) - self.contentEdgeInsets.right - CGRectGetWidth(imageViewFrame);
+                titleLabelFrame.origin.x = CGRectGetMinX(imageViewFrame) - LGAlertViewButtonImageOffsetFromTitle - CGRectGetWidth(titleLabelFrame);
+            }
+            else {
+                imageViewFrame.origin.x += CGRectGetWidth(titleLabelFrame) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
+                titleLabelFrame.origin.x -= CGRectGetWidth(imageViewFrame) + (LGAlertViewButtonImageOffsetFromTitle / 2.0);
+            }
+        }
+        #pragma clang diagnostic pop
     }
 
     if (LGAlertViewHelper.isNotRetina) {
@@ -99,7 +164,7 @@
     self.imageView.frame = imageViewFrame;
 
     if (LGAlertViewHelper.isNotRetina) {
-        titleLabelFrame = CGRectIntegral(imageViewFrame);
+        titleLabelFrame = CGRectIntegral(titleLabelFrame);
     }
 
     self.titleLabel.frame = titleLabelFrame;

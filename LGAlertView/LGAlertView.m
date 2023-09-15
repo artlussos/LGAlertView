@@ -2404,10 +2404,23 @@ LGAlertViewType;
                         }
 
                         if (self.destructiveButton.imageView.image && self.destructiveButton.titleLabel.text.length) {
-                            self.destructiveButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                            if (@available(iOS 15.0, *)) {
+                                UIButtonConfiguration *config = self.destructiveButton.configuration;
+                                config.titlePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+                                config.imagePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+
+                                // Apply the updated configuration
+                                self.destructiveButton.configuration = config;
+                            } else {
+                                // Suppressing the deprecation warning
+                                #pragma clang diagnostic push
+                                #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                                self.destructiveButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                                                                       LGAlertViewButtonImageOffsetFromTitle / 2.0,
                                                                                       0.0,
                                                                                       LGAlertViewButtonImageOffsetFromTitle / 2.0);
+                                #pragma clang diagnostic pop
+                            }
                         }
 
                         self.destructiveButton.enabled = self.destructiveButtonEnabled;
@@ -2504,10 +2517,22 @@ LGAlertViewType;
                         }
 
                         if (self.firstButton.imageView.image && self.firstButton.titleLabel.text.length) {
-                            self.firstButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                            if (@available(iOS 15.0, *)) {
+                                UIButtonConfiguration *config = self.firstButton.configuration;
+                                config.titlePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+                                config.imagePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+
+                                // Apply the updated configuration
+                                self.firstButton.configuration = config;
+                            } else {
+                                #pragma clang diagnostic push
+                                #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                                self.firstButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                                                                 LGAlertViewButtonImageOffsetFromTitle / 2.0,
                                                                                 0.0,
                                                                                 LGAlertViewButtonImageOffsetFromTitle / 2.0);
+                                #pragma clang diagnostic pop
+                            }
                         }
 
                         self.firstButton.enabled = [self.buttonsEnabledArray[0] boolValue];
@@ -2593,10 +2618,23 @@ LGAlertViewType;
                             }
 
                             if (self.secondButton.imageView.image && self.secondButton.titleLabel.text.length) {
-                                self.secondButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                if (@available(iOS 15.0, *)) {
+                                    UIButtonConfiguration *config = self.secondButton.configuration;
+                                    config.titlePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+                                    config.imagePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+
+                                    // Apply the updated configuration
+                                    self.secondButton.configuration = config;
+                                } else {
+                                    // Suppressing the deprecation warning
+                                    #pragma clang diagnostic push
+                                    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                                    self.secondButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                                                                      LGAlertViewButtonImageOffsetFromTitle / 2.0,
                                                                                      0.0,
                                                                                      LGAlertViewButtonImageOffsetFromTitle / 2.0);
+                                    #pragma clang diagnostic pop
+                                }
                             }
 
                             self.secondButton.enabled = [self.buttonsEnabledArray[1] boolValue];
@@ -2682,10 +2720,23 @@ LGAlertViewType;
                                 }
 
                                 if (self.thirdButton.imageView.image && self.thirdButton.titleLabel.text.length) {
-                                    self.thirdButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+                                    if (@available(iOS 15.0, *)) {
+                                        UIButtonConfiguration *config = self.thirdButton.configuration;
+                                        config.titlePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+                                        config.imagePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+
+                                        // Apply the updated configuration
+                                        self.thirdButton.configuration = config;
+                                    } else {
+                                        // Suppressing the deprecation warning
+                                        #pragma clang diagnostic push
+                                        #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                                        self.thirdButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                                                                         LGAlertViewButtonImageOffsetFromTitle / 2.0,
                                                                                         0.0,
                                                                                         LGAlertViewButtonImageOffsetFromTitle / 2.0);
+                                        #pragma clang diagnostic pop
+                                    }
                                 }
 
                                 self.thirdButton.enabled = [self.buttonsEnabledArray[2] boolValue];
@@ -3122,10 +3173,23 @@ LGAlertViewType;
     }
 
     if (self.cancelButton.imageView.image && self.cancelButton.titleLabel.text.length) {
-        self.cancelButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+        if (@available(iOS 15.0, *)) {
+            UIButtonConfiguration *config = self.cancelButton.configuration;
+            config.titlePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+            config.imagePadding = LGAlertViewButtonImageOffsetFromTitle / 2.0;
+
+            // Apply the updated configuration
+            self.cancelButton.configuration = config;
+        } else {
+            // Suppressing the deprecation warning
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            self.cancelButton.titleEdgeInsets = UIEdgeInsetsMake(0.0,
                                                              LGAlertViewButtonImageOffsetFromTitle / 2.0,
                                                              0.0,
                                                              LGAlertViewButtonImageOffsetFromTitle / 2.0);
+            #pragma clang diagnostic pop
+        }
     }
 
     self.cancelButton.enabled = self.cancelButtonEnabled;
