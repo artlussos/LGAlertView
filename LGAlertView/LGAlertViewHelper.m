@@ -141,7 +141,14 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
 
 #if TARGET_OS_IOS
 + (UIWindow *)appWindow {
-    return [UIApplication sharedApplication].windows[0];
+    if (@available(iOS 15.0, *)) {
+        UIWindowScene *windowScene = (UIWindowScene *)[UIApplication sharedApplication].connectedScenes.anyObject;
+        if (windowScene && [windowScene isKindOfClass:[UIWindowScene class]]) {
+            return windowScene.windows.firstObject;
+        }
+    }
+
+    return [UIApplication sharedApplication].windows.firstObject;
 }
 
 + (UIWindow *)keyWindow {
