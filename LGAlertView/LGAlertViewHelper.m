@@ -146,9 +146,10 @@ CGFloat const LGAlertViewButtonImageOffsetFromTitle = 8.0;
         if (windowScene && [windowScene isKindOfClass:[UIWindowScene class]]) {
             return windowScene.windows.firstObject;
         }
+    } else {
+        return [UIApplication sharedApplication].windows.firstObject;
     }
-
-    return [UIApplication sharedApplication].windows.firstObject;
+    return nil;
 }
 
 + (UIWindow *)keyWindow {
