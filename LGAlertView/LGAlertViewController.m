@@ -64,15 +64,15 @@
 
 #pragma mark -
 
-- (BOOL)shouldAutorotate {
-    UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
+// - (BOOL)shouldAutorotate {
+//     UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
 
-    if (viewController) {
-        return viewController.shouldAutorotate;
-    }
+//     if (viewController) {
+//         return viewController.shouldAutorotate;
+//     }
 
-    return super.shouldAutorotate;
-}
+//     return super.shouldAutorotate;
+// }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     UIViewController *viewController = LGAlertViewHelper.appWindow.currentViewController;
